@@ -5,15 +5,9 @@ import {
   Milk,
   Stethoscope,
   Wheat,
-  type LucideIcon,
 } from "lucide-react";
 
-export type ActivityItem = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  href: string;
-};
+import type { ActivityItem } from "@/types/activity";
 
 export const activities: ActivityItem[] = [
   {

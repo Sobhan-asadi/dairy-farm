@@ -1,4 +1,4 @@
-import type { ActivityItem } from "@/constants/activities";
+import type { ActivityItem } from "@/types/activity";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

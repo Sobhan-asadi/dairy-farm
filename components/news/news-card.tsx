@@ -1,4 +1,4 @@
-import type { NewsItem } from "@/constants/news";
+import type { NewsItem } from "@/types/news";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

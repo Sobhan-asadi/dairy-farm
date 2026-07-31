@@ -1,11 +1,4 @@
-export type ProductItem = {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  image: string;
-  href: string;
-};
+import type { ProductItem } from "@/types/product";
 
 export const featuredProducts: ProductItem[] = [
   {

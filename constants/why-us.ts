@@ -1,16 +1,6 @@
-import {
-  BadgeCheck,
-  HeartPulse,
-  ShieldCheck,
-  Truck,
-  type LucideIcon,
-} from "lucide-react";
+import { BadgeCheck, HeartPulse, ShieldCheck, Truck } from "lucide-react";
 
-export type WhyUsItem = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-};
+import type { WhyUsItem } from "@/types/why-us";
 
 export const whyUsItems: WhyUsItem[] = [
   {

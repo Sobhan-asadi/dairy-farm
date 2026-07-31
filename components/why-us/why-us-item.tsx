@@ -1,4 +1,4 @@
-import type { WhyUsItem as WhyUsItemType } from "@/constants/why-us";
+import type { WhyUsItem as WhyUsItemType } from "@/types/why-us";
 
 type WhyUsItemProps = {
   item: WhyUsItemType;

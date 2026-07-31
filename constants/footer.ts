@@ -1,16 +1,6 @@
-import type { LucideIcon } from "lucide-react";
 import { Globe2, MessagesSquare, Send } from "lucide-react";
 
-export type FooterLink = {
-  label: string;
-  href: string;
-};
-
-export type SocialLink = {
-  label: string;
-  href: string;
-  icon: LucideIcon;
-};
+import type { FooterLink, SocialLink } from "@/types/footer";
 
 export const footerLinks = {
   quickAccess: [

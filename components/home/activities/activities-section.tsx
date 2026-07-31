@@ -2,6 +2,7 @@ import Container from "@/components/common/container";
 import Reveal from "@/components/common/reveal";
 import SectionHeading from "@/components/common/section-heading";
 import { activities } from "@/constants/activities";
+
 import ActivityCard from "./activity-card";
 
 export default function ActivitiesSection() {

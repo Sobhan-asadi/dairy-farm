@@ -1,12 +1,4 @@
-export type NewsItem = {
-  id: number;
-  title: string;
-  excerpt: string;
-  image: string;
-  publishedAt: string;
-  category: string;
-  href: string;
-};
+import type { NewsItem } from "@/types/news";
 
 export const latestNews: NewsItem[] = [
   {
