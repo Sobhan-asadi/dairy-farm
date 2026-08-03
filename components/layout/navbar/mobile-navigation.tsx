@@ -12,24 +12,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { navigationItems } from "@/constants/navigation";
-import { Menu, ShoppingCart } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
+import CartLink from "./cart-link";
 import Logo from "./logo";
 import NavLink from "./nav-link";
 
 export default function MobileNavigation() {
   return (
     <div className="flex items-center gap-1 lg:hidden">
-      <Link
-        href="/cart"
-        aria-label="سبد خرید"
-        className={buttonVariants({
-          variant: "ghost",
-          size: "icon",
-        })}
-      >
-        <ShoppingCart />
-      </Link>
+      <CartLink />
 
       <Sheet>
         <SheetTrigger

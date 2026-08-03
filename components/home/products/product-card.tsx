@@ -10,7 +10,7 @@ type ProductCardProps = {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="group bg-card overflow-hidden rounded-2xl border">
-      <Link href={product.href} className="block">
+      <Link href={`/products/${product.slug}`} className="block">
         <div className="relative aspect-4/3 overflow-hidden">
           <Image
             src={product.image}
@@ -34,8 +34,32 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.description}
           </p>
 
+          <div className="mt-4">
+            {!product.isAvailable ? (
+              <span className="text-destructive text-sm font-bold">
+                ناموجود
+              </span>
+            ) : product.purchaseType === "direct" ? (
+              <p className="text-primary font-black">
+                {product.price?.toLocaleString("fa-IR")} تومان
+                <span className="text-muted-foreground mr-1 text-xs font-medium">
+                  / {product.unit}
+                </span>
+              </p>
+            ) : (
+              <span className="text-primary text-sm font-bold">
+                نیازمند استعلام قیمت
+              </span>
+            )}
+          </div>
+
           <span className="text-primary mt-5 inline-flex items-center gap-2 text-sm font-semibold">
-            مشاهده محصول
+            {!product.isAvailable
+              ? "مشاهده محصول"
+              : product.purchaseType === "direct"
+                ? "مشاهده و خرید"
+                : "ثبت درخواست خرید"}
+
             <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
           </span>
         </div>

@@ -5,4 +5,9 @@ export type ActivityItem = {
   description: string;
   icon: LucideIcon;
   href: string;
+  image: string;
+  cover: string;
+  slug: string;
+  longDescription: string[];
+  features: string[];
 };

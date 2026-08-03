@@ -1,3 +1,5 @@
+import CartPageContent from "@/components/cart/cart-page-content";
+
 export default function CartPage() {
-  return <div>CartPage</div>;
+  return <CartPageContent />;
 }

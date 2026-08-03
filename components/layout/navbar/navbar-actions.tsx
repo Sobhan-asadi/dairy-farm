@@ -1,9 +1,8 @@
 /** @format */
 
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import CartLink from "./cart-link";
 
 export default function NavbarActions() {
   return (
@@ -12,13 +11,7 @@ export default function NavbarActions() {
         ورود
       </Link>
 
-      <Link
-        href="/cart"
-        aria-label="سبد خرید"
-        className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
-      >
-        <ShoppingCart />
-      </Link>
+      <CartLink />
 
       <Link href="/products" className={buttonVariants({ variant: "default" })}>
         مشاهده محصولات
