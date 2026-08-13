@@ -15,6 +15,7 @@ import {
 } from "react";
 
 type CartContextValue = {
+  isInitialized: boolean;
   items: CartItem[];
   totalItems: number;
   totalPrice: number;
@@ -163,6 +164,7 @@ export default function CartProvider({ children }: CartProviderProps) {
       updateQuantity,
       removeItem,
       clearCart,
+      isInitialized,
     }),
     [
       items,
@@ -172,6 +174,7 @@ export default function CartProvider({ children }: CartProviderProps) {
       updateQuantity,
       removeItem,
       clearCart,
+      isInitialized,
     ],
   );
 
