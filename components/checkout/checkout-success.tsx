@@ -1,54 +1,28 @@
 "use client";
 
 import { useCart } from "@/components/providers/cart-provider";
-import { useIsClient } from "@/hooks/use-is-client";
+import { useCheckout } from "@/components/providers/checkout-provider";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-type LastOrder = {
-  orderId: string;
-  paymentMethod: "online" | "receipt";
-};
-
 export default function CheckoutSuccess() {
   const router = useRouter();
+
   const { clearCart } = useCart();
-  const isClient = useIsClient();
-
-  let order: LastOrder | null = null;
-
-  if (isClient) {
-    const storedOrder = sessionStorage.getItem("dairy-farm-last-order");
-
-    if (storedOrder) {
-      try {
-        order = JSON.parse(storedOrder) as LastOrder;
-      } catch {
-        sessionStorage.removeItem("dairy-farm-last-order");
-      }
-    }
-  }
+  const { lastOrder } = useCheckout();
 
   useEffect(() => {
-    if (!isClient) {
-      return;
-    }
-
-    if (!order) {
+    if (!lastOrder) {
       router.replace("/products");
       return;
     }
 
     clearCart();
+  }, [lastOrder, clearCart, router]);
 
-    sessionStorage.removeItem("dairy-farm-checkout-customer");
-
-    sessionStorage.removeItem("dairy-farm-checkout-terms");
-  }, [isClient, order, clearCart, router]);
-
-  if (!isClient || !order) {
+  if (!lastOrder) {
     return null;
   }
 
@@ -71,14 +45,14 @@ export default function CheckoutSuccess() {
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground text-sm">شماره سفارش</span>
 
-            <strong dir="ltr">{order.orderId}</strong>
+            <strong dir="ltr">{lastOrder.orderId}</strong>
           </div>
 
           <div className="mt-4 flex items-center justify-between gap-4">
             <span className="text-muted-foreground text-sm">روش پرداخت</span>
 
             <strong className="text-sm">
-              {order.paymentMethod === "online"
+              {lastOrder.paymentMethod === "online"
                 ? "پرداخت آنلاین"
                 : "بارگذاری رسید"}
             </strong>

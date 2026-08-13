@@ -1,6 +1,6 @@
 "use client";
 
-import { useIsClient } from "@/hooks/use-is-client";
+import { useCheckout } from "@/components/providers/checkout-provider";
 import { CreditCard, ReceiptText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ChangeEvent } from "react";
@@ -9,7 +9,8 @@ type PaymentMethod = "online" | "receipt";
 
 export default function CheckoutPayment() {
   const router = useRouter();
-  const isClient = useIsClient();
+
+  const { customer, hasAcceptedTerms, createOrder } = useCheckout();
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("online");
 
@@ -17,15 +18,16 @@ export default function CheckoutPayment() {
 
   const [fileError, setFileError] = useState("");
 
-  const hasAcceptedTerms =
-    isClient &&
-    sessionStorage.getItem("dairy-farm-checkout-terms") === "accepted";
-
   useEffect(() => {
-    if (isClient && !hasAcceptedTerms) {
+    if (!customer) {
+      router.replace("/checkout");
+      return;
+    }
+
+    if (!hasAcceptedTerms) {
       router.replace("/checkout/terms");
     }
-  }, [isClient, hasAcceptedTerms, router]);
+  }, [customer, hasAcceptedTerms, router]);
 
   const handleReceiptChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -64,20 +66,12 @@ export default function CheckoutPayment() {
       return;
     }
 
-    const orderId = `DF-${Date.now()}`;
-
-    sessionStorage.setItem(
-      "dairy-farm-last-order",
-      JSON.stringify({
-        orderId,
-        paymentMethod,
-      }),
-    );
+    createOrder(paymentMethod);
 
     router.push("/checkout/success");
   };
 
-  if (!isClient || !hasAcceptedTerms) {
+  if (!customer || !hasAcceptedTerms) {
     return null;
   }
 

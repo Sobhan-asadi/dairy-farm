@@ -1,35 +1,33 @@
 "use client";
 
-import { useIsClient } from "@/hooks/use-is-client";
+import { useCheckout } from "@/components/providers/checkout-provider";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CheckoutTerms() {
   const router = useRouter();
-  const isClient = useIsClient();
+
+  const { customer, acceptTerms } = useCheckout();
 
   const [accepted, setAccepted] = useState(false);
 
-  const hasCustomerData =
-    isClient && sessionStorage.getItem("dairy-farm-checkout-customer") !== null;
-
   useEffect(() => {
-    if (isClient && !hasCustomerData) {
+    if (!customer) {
       router.replace("/checkout");
     }
-  }, [isClient, hasCustomerData, router]);
+  }, [customer, router]);
 
   const handleContinue = () => {
     if (!accepted) {
       return;
     }
 
-    sessionStorage.setItem("dairy-farm-checkout-terms", "accepted");
+    acceptTerms();
 
     router.push("/checkout/payment");
   };
 
-  if (!isClient || !hasCustomerData) {
+  if (!customer) {
     return null;
   }
 
