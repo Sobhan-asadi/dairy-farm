@@ -1,38 +1,54 @@
 "use client";
 
 import { useCheckout } from "@/components/providers/checkout-provider";
+import type { PaymentMethod } from "@/types/order";
 import { CreditCard, ReceiptText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ChangeEvent } from "react";
 
-type PaymentMethod = "online" | "receipt";
-
 export default function CheckoutPayment() {
   const router = useRouter();
 
-  const { customer, hasAcceptedTerms, createOrder } = useCheckout();
+  const { draft, setPaymentMethod, completeOrder } = useCheckout();
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("online");
+  const [paymentMethod, setLocalPaymentMethod] =
+    useState<PaymentMethod>("online");
 
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
 
   const [fileError, setFileError] = useState("");
 
   useEffect(() => {
-    if (!customer) {
+    if (!draft) {
+      router.replace("/cart");
+      return;
+    }
+
+    if (!draft.customer) {
       router.replace("/checkout");
       return;
     }
 
-    if (!hasAcceptedTerms) {
+    if (!draft.termsAccepted) {
       router.replace("/checkout/terms");
     }
-  }, [customer, hasAcceptedTerms, router]);
+  }, [draft, router]);
+
+  const handlePaymentMethodChange = (method: PaymentMethod) => {
+    setLocalPaymentMethod(method);
+    setPaymentMethod(method);
+
+    if (method === "online") {
+      setReceiptFile(null);
+      setFileError("");
+    }
+  };
 
   const handleReceiptChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (!file) {
+      setReceiptFile(null);
       return;
     }
 
@@ -66,12 +82,11 @@ export default function CheckoutPayment() {
       return;
     }
 
-    createOrder(paymentMethod);
-
+    completeOrder(paymentMethod);
     router.push("/checkout/success");
   };
 
-  if (!customer || !hasAcceptedTerms) {
+  if (!draft || !draft.customer || !draft.termsAccepted) {
     return null;
   }
 
@@ -92,7 +107,7 @@ export default function CheckoutPayment() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <button
           type="button"
-          onClick={() => setPaymentMethod("online")}
+          onClick={() => handlePaymentMethodChange("online")}
           aria-pressed={paymentMethod === "online"}
           className={`rounded-2xl border p-5 text-right transition-all ${
             paymentMethod === "online"
@@ -111,7 +126,7 @@ export default function CheckoutPayment() {
 
         <button
           type="button"
-          onClick={() => setPaymentMethod("receipt")}
+          onClick={() => handlePaymentMethodChange("receipt")}
           aria-pressed={paymentMethod === "receipt"}
           className={`rounded-2xl border p-5 text-right transition-all ${
             paymentMethod === "receipt"

@@ -1,23 +1,24 @@
 "use client";
 
 import type { CheckoutFormValues } from "@/lib/validations/checkout";
-import { createContext, useContext, useState, type ReactNode } from "react";
-
-export type PaymentMethod = "online" | "receipt";
-
-export type LastOrder = {
-  orderId: string;
-  paymentMethod: PaymentMethod;
-};
+import {
+  checkoutReducer,
+  initialCheckoutState,
+  type CheckoutState,
+} from "@/reducers/checkout-reducer";
+import type { CartItem } from "@/types/cart";
+import type { PaymentMethod } from "@/types/order";
+import { createContext, useContext, useReducer, type ReactNode } from "react";
 
 type CheckoutContextValue = {
-  customer: CheckoutFormValues | null;
-  hasAcceptedTerms: boolean;
-  lastOrder: LastOrder | null;
+  draft: CheckoutState["draft"];
+  completedOrder: CheckoutState["completedOrder"];
 
+  startCheckout: (items: CartItem[], subtotal: number) => void;
   setCustomer: (customer: CheckoutFormValues) => void;
   acceptTerms: () => void;
-  createOrder: (paymentMethod: PaymentMethod) => void;
+  setPaymentMethod: (paymentMethod: PaymentMethod) => void;
+  completeOrder: (paymentMethod: PaymentMethod) => void;
   resetCheckout: () => void;
 };
 
@@ -28,38 +29,75 @@ type CheckoutProviderProps = {
 };
 
 export function CheckoutProvider({ children }: CheckoutProviderProps) {
-  const [customer, setCustomer] = useState<CheckoutFormValues | null>(null);
+  const [state, dispatch] = useReducer(checkoutReducer, initialCheckoutState);
 
-  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
-
-  const [lastOrder, setLastOrder] = useState<LastOrder | null>(null);
-
-  const acceptTerms = () => {
-    setHasAcceptedTerms(true);
+  const startCheckout = (items: CartItem[], subtotal: number) => {
+    dispatch({
+      type: "START_CHECKOUT",
+      payload: {
+        items,
+        subtotal,
+      },
+    });
   };
 
-  const createOrder = (paymentMethod: PaymentMethod) => {
-    setLastOrder({
-      orderId: `DF-${Date.now()}`,
-      paymentMethod,
+  const setCustomer = (customer: CheckoutFormValues) => {
+    dispatch({
+      type: "SET_CUSTOMER",
+      payload: customer,
+    });
+  };
+
+  const acceptTerms = () => {
+    dispatch({
+      type: "ACCEPT_TERMS",
+    });
+  };
+
+  const setPaymentMethod = (paymentMethod: PaymentMethod) => {
+    dispatch({
+      type: "SET_PAYMENT_METHOD",
+      payload: paymentMethod,
+    });
+  };
+
+  const completeOrder = (paymentMethod: PaymentMethod) => {
+    const draft = state.draft;
+
+    if (!draft?.customer || !draft.termsAccepted) {
+      return;
+    }
+
+    dispatch({
+      type: "COMPLETE_ORDER",
+      payload: {
+        id: `DF-${Date.now()}`,
+        items: draft.items,
+        subtotal: draft.subtotal,
+        customer: draft.customer,
+        paymentMethod,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+      },
     });
   };
 
   const resetCheckout = () => {
-    setCustomer(null);
-    setHasAcceptedTerms(false);
-    setLastOrder(null);
+    dispatch({
+      type: "RESET_CHECKOUT",
+    });
   };
 
   return (
     <CheckoutContext
       value={{
-        customer,
-        hasAcceptedTerms,
-        lastOrder,
+        draft: state.draft,
+        completedOrder: state.completedOrder,
+        startCheckout,
         setCustomer,
         acceptTerms,
-        createOrder,
+        setPaymentMethod,
+        completeOrder,
         resetCheckout,
       }}
     >

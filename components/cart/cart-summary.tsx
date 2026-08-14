@@ -1,13 +1,19 @@
 "use client";
 
 import { useCart } from "@/components/providers/cart-provider";
-
+import { useCheckout } from "@/components/providers/checkout-provider";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function CartSummary() {
-  const { totalItems, totalPrice, clearCart } = useCart();
   const router = useRouter();
+  const { items, totalItems, totalPrice, clearCart } = useCart();
+  const { startCheckout } = useCheckout();
+
+  const handleCheckout = () => {
+    startCheckout(items, totalPrice);
+    router.push("/checkout");
+  };
 
   return (
     <aside className="bg-card shadow-card rounded-2xl border p-5 lg:sticky lg:top-28">
@@ -39,7 +45,7 @@ export default function CartSummary() {
 
       <button
         type="button"
-        onClick={() => router.push("/checkout")}
+        onClick={handleCheckout}
         className="bg-primary text-primary-foreground hover:bg-primary/90 mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold transition-colors"
       >
         ادامه فرایند خرید

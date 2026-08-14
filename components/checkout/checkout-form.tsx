@@ -1,6 +1,5 @@
 "use client";
 
-import { useCart } from "@/components/providers/cart-provider";
 import { useCheckout } from "@/components/providers/checkout-provider";
 import { Checkout, type CheckoutFormValues } from "@/lib/validations/checkout";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,14 +11,13 @@ import CheckoutCustomerFields from "./checkout-customer-fields";
 export default function CheckoutForm() {
   const router = useRouter();
 
-  const { items, isInitialized } = useCart();
-  const { setCustomer } = useCheckout();
+  const { draft, setCustomer } = useCheckout();
 
   useEffect(() => {
-    if (isInitialized && items.length === 0) {
+    if (!draft) {
       router.replace("/cart");
     }
-  }, [isInitialized, items.length, router]);
+  }, [draft, router]);
 
   const {
     register,
@@ -41,6 +39,10 @@ export default function CheckoutForm() {
     setCustomer(data);
     router.push("/checkout/terms");
   };
+
+  if (!draft) {
+    return null;
+  }
 
   return (
     <form

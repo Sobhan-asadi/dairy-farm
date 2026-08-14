@@ -6,16 +6,20 @@ import { useEffect, useState } from "react";
 
 export default function CheckoutTerms() {
   const router = useRouter();
-
-  const { customer, acceptTerms } = useCheckout();
+  const { draft, acceptTerms } = useCheckout();
 
   const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
-    if (!customer) {
+    if (!draft) {
+      router.replace("/cart");
+      return;
+    }
+
+    if (!draft.customer) {
       router.replace("/checkout");
     }
-  }, [customer, router]);
+  }, [draft, router]);
 
   const handleContinue = () => {
     if (!accepted) {
@@ -23,11 +27,10 @@ export default function CheckoutTerms() {
     }
 
     acceptTerms();
-
     router.push("/checkout/payment");
   };
 
-  if (!customer) {
+  if (!draft || !draft.customer) {
     return null;
   }
 

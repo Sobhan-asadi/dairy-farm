@@ -11,50 +11,92 @@ export default function CheckoutSuccess() {
   const router = useRouter();
 
   const { clearCart } = useCart();
-  const { lastOrder } = useCheckout();
+  const { completedOrder } = useCheckout();
 
   useEffect(() => {
-    if (!lastOrder) {
+    if (!completedOrder) {
       router.replace("/products");
       return;
     }
 
     clearCart();
-  }, [lastOrder, clearCart, router]);
+  }, [completedOrder, clearCart, router]);
 
-  if (!lastOrder) {
+  if (!completedOrder) {
     return null;
   }
 
   return (
-    <section className="mx-auto max-w-2xl text-center">
+    <section className="mx-auto max-w-3xl">
       <div className="bg-card rounded-3xl border p-6 sm:p-10">
-        <span className="bg-secondary text-primary mx-auto flex size-16 items-center justify-center rounded-2xl">
-          <CheckCircle2 className="size-8" />
-        </span>
+        <div className="text-center">
+          <span className="bg-secondary text-primary mx-auto flex size-16 items-center justify-center rounded-2xl">
+            <CheckCircle2 className="size-8" />
+          </span>
 
-        <h1 className="mt-6 text-3xl font-black sm:text-4xl">
-          سفارش با موفقیت ثبت شد
-        </h1>
+          <h1 className="mt-6 text-3xl font-black sm:text-4xl">
+            سفارش با موفقیت ثبت شد
+          </h1>
 
-        <p className="text-muted-foreground mt-3 text-sm leading-7">
-          اطلاعات سفارش شما ثبت شد و پس از بررسی، وضعیت آن به‌روزرسانی خواهد شد.
-        </p>
+          <p className="text-muted-foreground mt-3 text-sm leading-7">
+            اطلاعات سفارش شما ثبت شد و پس از بررسی، وضعیت آن به‌روزرسانی خواهد
+            شد.
+          </p>
+        </div>
 
-        <div className="bg-surface-muted mt-8 rounded-2xl p-5 text-right">
+        <div className="bg-surface-muted mt-8 rounded-2xl p-5">
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground text-sm">شماره سفارش</span>
 
-            <strong dir="ltr">{lastOrder.orderId}</strong>
+            <strong dir="ltr">{completedOrder.id}</strong>
           </div>
 
           <div className="mt-4 flex items-center justify-between gap-4">
             <span className="text-muted-foreground text-sm">روش پرداخت</span>
 
             <strong className="text-sm">
-              {lastOrder.paymentMethod === "online"
+              {completedOrder.paymentMethod === "online"
                 ? "پرداخت آنلاین"
                 : "بارگذاری رسید"}
+            </strong>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between gap-4">
+            <span className="text-muted-foreground text-sm">وضعیت سفارش</span>
+
+            <strong className="text-sm">در انتظار بررسی</strong>
+          </div>
+
+          <div className="border-border mt-5 border-t pt-5">
+            <span className="text-muted-foreground text-sm">محصولات سفارش</span>
+
+            <div className="mt-4 space-y-3">
+              {completedOrder.items.map((item) => (
+                <div
+                  key={item.productId}
+                  className="flex items-center justify-between gap-4 text-sm"
+                >
+                  <div>
+                    <p className="font-medium">{item.title}</p>
+
+                    <p className="text-muted-foreground mt-1 text-xs">
+                      {item.quantity.toLocaleString("fa-IR")} {item.unit}
+                    </p>
+                  </div>
+
+                  <strong>
+                    {(item.price * item.quantity).toLocaleString("fa-IR")} تومان
+                  </strong>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-border mt-5 flex items-center justify-between border-t pt-5">
+            <span className="font-bold">مبلغ سفارش</span>
+
+            <strong className="text-primary text-lg">
+              {completedOrder.subtotal.toLocaleString("fa-IR")} تومان
             </strong>
           </div>
         </div>
