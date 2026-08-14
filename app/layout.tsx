@@ -1,4 +1,4 @@
-/** @format */
+import { AuthProvider } from "@/components/providers/auth-provider";
 import CartProvider from "@/components/providers/cart-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -6,7 +6,10 @@ import { Geist } from "next/font/google";
 import { estedad } from "../assets/font";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "دامداری",
@@ -31,7 +34,9 @@ export default function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
-        <CartProvider>{children}</CartProvider>
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
