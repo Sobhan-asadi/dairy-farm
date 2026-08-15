@@ -1,7 +1,6 @@
+import type { AuthUser } from "@/types/auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-import type { AuthUser } from "@/types/auth";
 
 type LoginRequestBody = {
   email: string;
