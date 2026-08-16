@@ -81,7 +81,6 @@ export default function CartProvider({ children }: CartProviderProps) {
       return;
     }
 
-    // بعد از این بررسی، price یک number قطعی است.
     const productPrice = product.price;
 
     setItems((currentItems) => {

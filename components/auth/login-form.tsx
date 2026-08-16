@@ -13,13 +13,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
+  const [submitError, setSubmitError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = searchParams.get("next");
 
   const { setUser } = useAuth();
-
-  const [submitError, setSubmitError] = useState("");
 
   const {
     register,

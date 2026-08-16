@@ -7,8 +7,8 @@ type LoginRequestBody = {
   password: string;
 };
 
-const MOCK_MANAGER_EMAIL = "manager@dairy.test";
-const MOCK_MANAGER_PASSWORD = "Manager123!";
+const MOCK_MANAGER_EMAIL = "sobhan@test.com";
+const MOCK_MANAGER_PASSWORD = "12345678";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as LoginRequestBody;
