@@ -3,6 +3,7 @@
 import {
   BarChart3,
   Beef,
+  BriefcaseBusiness,
   LayoutDashboard,
   Newspaper,
   Package,
@@ -60,6 +61,12 @@ const adminNavigation: AdminNavigationItem[] = [
     permission: "manage-news",
   },
   {
+    title: "درخواست‌های همکاری",
+    href: "/admin/careers",
+    icon: BriefcaseBusiness,
+    permission: "manage-careers",
+  },
+  {
     title: "کاردکس دام",
     href: "/admin/cattle",
     icon: Beef,
@@ -75,7 +82,7 @@ const adminNavigation: AdminNavigationItem[] = [
     title: "دسترسی‌ها",
     href: "/admin/permissions",
     icon: ShieldCheck,
-    permission: "manage-users",
+    permission: "manage-permissions",
   },
   {
     title: "آمار و گزارش‌ها",

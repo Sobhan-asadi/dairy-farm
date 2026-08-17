@@ -9,8 +9,7 @@ export type RegisterData = {
   password: string;
 };
 
-export type UserRole =
-  "customer" | "manager" | "admin" | "kartaks" | "news-editor";
+export type UserRole = "customer" | "manager" | "admin" | "kartaks";
 
 export type Permission =
   | "view-dashboard"
@@ -18,7 +17,9 @@ export type Permission =
   | "manage-orders"
   | "manage-users"
   | "manage-news"
+  | "manage-careers"
   | "manage-kartaks"
+  | "manage-permissions"
   | "view-analytics";
 
 export type AuthUser = {
