@@ -133,7 +133,7 @@ export const products: ProductItem[] = [
   {
     id: 6,
     slug: "breeding-semen",
-    title: "اسپرم اصلاح نژاد",
+    title: "اصلاح نژاد",
     description: "خدمات و محصولات مرتبط با اصلاح نژاد و افزایش بهره‌وری گله.",
     longDescription: [
       "انتخاب مورد مناسب با توجه به شرایط گله و اهداف اصلاح نژادی انجام می‌شود.",
@@ -207,6 +207,96 @@ export const products: ProductItem[] = [
     isAvailable: false,
     price: 780000,
     stock: 0,
+  },
+
+  {
+    id: 9,
+    slug: "livestock",
+    title: "دام زنده سالم",
+    description:
+      "عرضه دام سالم و پرورش‌یافته تحت نظارت، مناسب مجموعه‌ها و خریداران عمده.",
+    longDescription: [
+      "دام‌های مجموعه با رعایت اصول بهداشتی و تحت نظارت تخصصی نگهداری می‌شوند.",
+      "قیمت و شرایط عرضه بر اساس نوع دام، نژاد، وزن و تعداد موردنیاز مشخص می‌شود.",
+    ],
+    category: "دام زنده",
+    image: "/images/products/livestock.webp",
+    cover: "/images/products/livestock.webp",
+    gallery: [
+      "/images/products/livestock.webp",
+      "/images/activities/livestock.jpg",
+      "/images/activities/livestock-cover.jpg",
+    ],
+    features: ["بررسی سلامت دام", "امکان سفارش عمده", "مشاوره پیش از خرید"],
+    purchaseType: "request",
+    unit: "رأس",
+    isAvailable: true,
+    requestFields: {
+      quantity: true,
+      breed: true,
+      approximateWeight: true,
+      description: true,
+    },
+  },
+
+  {
+    id: 10,
+    slug: "livestock",
+    title: "دام زنده سالم",
+    description:
+      "عرضه دام سالم و پرورش‌یافته تحت نظارت، مناسب مجموعه‌ها و خریداران عمده.",
+    longDescription: [
+      "دام‌های مجموعه با رعایت اصول بهداشتی و تحت نظارت تخصصی نگهداری می‌شوند.",
+      "قیمت و شرایط عرضه بر اساس نوع دام، نژاد، وزن و تعداد موردنیاز مشخص می‌شود.",
+    ],
+    category: "دام زنده",
+    image: "/images/products/livestock.webp",
+    cover: "/images/products/livestock.webp",
+    gallery: [
+      "/images/products/livestock.webp",
+      "/images/activities/livestock.jpg",
+      "/images/activities/livestock-cover.jpg",
+    ],
+    features: ["بررسی سلامت دام", "امکان سفارش عمده", "مشاوره پیش از خرید"],
+    purchaseType: "request",
+    unit: "رأس",
+    isAvailable: true,
+    requestFields: {
+      quantity: true,
+      breed: true,
+      approximateWeight: true,
+      description: true,
+    },
+  },
+
+  {
+    id: 11,
+    slug: "livestock",
+    title: "دام زنده سالم",
+    description:
+      "عرضه دام سالم و پرورش‌یافته تحت نظارت، مناسب مجموعه‌ها و خریداران عمده.",
+    longDescription: [
+      "دام‌های مجموعه با رعایت اصول بهداشتی و تحت نظارت تخصصی نگهداری می‌شوند.",
+      "قیمت و شرایط عرضه بر اساس نوع دام، نژاد، وزن و تعداد موردنیاز مشخص می‌شود.",
+    ],
+    category: "دام زنده",
+    image: "/images/products/livestock.webp",
+    cover: "/images/products/livestock.webp",
+    gallery: [
+      "/images/products/livestock.webp",
+      "/images/activities/livestock.jpg",
+      "/images/activities/livestock-cover.jpg",
+    ],
+    features: ["بررسی سلامت دام", "امکان سفارش عمده", "مشاوره پیش از خرید"],
+    purchaseType: "request",
+    unit: "رأس",
+    isAvailable: true,
+    requestFields: {
+      quantity: true,
+      breed: true,
+      approximateWeight: true,
+      description: true,
+    },
   },
 ];
 
