@@ -6,12 +6,17 @@ type RecentOrdersProps = {
 
 const orderStatusLabels = {
   pending: "در انتظار بررسی",
-  "awaiting-payment": "در انتظار پرداخت",
-  paid: "پرداخت‌شده",
   "under-review": "در حال بررسی",
   completed: "تکمیل‌شده",
   cancelled: "لغوشده",
 } satisfies Record<Order["status"], string>;
+
+const paymentStatusLabels = {
+  "awaiting-payment": "در انتظار پرداخت",
+  "under-review": "در حال بررسی",
+  paid: "پرداخت‌شده",
+  failed: "ناموفق",
+} satisfies Record<Order["paymentStatus"], string>;
 
 export function RecentOrders({ orders }: RecentOrdersProps) {
   return (
@@ -43,9 +48,13 @@ export function RecentOrders({ orders }: RecentOrdersProps) {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between gap-6 sm:justify-end">
+              <div className="flex flex-wrap items-center gap-4 sm:justify-end">
                 <span className="text-muted-foreground text-sm">
-                  {orderStatusLabels[order.status]}
+                  سفارش: {orderStatusLabels[order.status]}
+                </span>
+
+                <span className="text-muted-foreground text-sm">
+                  پرداخت: {paymentStatusLabels[order.paymentStatus]}
                 </span>
 
                 <strong className="text-sm whitespace-nowrap">

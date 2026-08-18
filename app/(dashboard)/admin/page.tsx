@@ -22,11 +22,19 @@ export default async function AdminPage() {
 
   const canViewOperationalActions = canManageOrders || canManageCareers;
 
-  const [stats, orders, salesTrend, trafficStats, actionItems] =
+  const [stats, ordersResult, salesTrend, trafficStats, actionItems] =
     await Promise.all([
       mockDashboardService.getStats(),
 
-      canManageOrders ? mockOrdersService.getOrders() : Promise.resolve(null),
+      canManageOrders
+        ? mockOrdersService.getOrders({
+            page: 1,
+            pageSize: 5,
+            status: "all",
+            paymentMethod: "all",
+            paymentStatus: "all",
+          })
+        : Promise.resolve(null),
 
       isManager ? mockDashboardService.getSalesTrend() : Promise.resolve(null),
 
@@ -39,7 +47,7 @@ export default async function AdminPage() {
         : Promise.resolve(null),
     ]);
 
-  const recentOrders = orders?.slice(0, 5) ?? [];
+  const recentOrders = ordersResult?.items ?? [];
 
   const visibleActionItems =
     actionItems?.filter((item) => {

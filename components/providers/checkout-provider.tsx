@@ -1,5 +1,7 @@
 "use client";
 
+import { createContext, useContext, useReducer, type ReactNode } from "react";
+
 import type { CheckoutFormValues } from "@/lib/validations/checkout";
 import {
   checkoutReducer,
@@ -8,7 +10,6 @@ import {
 } from "@/reducers/checkout-reducer";
 import type { CartItem } from "@/types/cart";
 import type { PaymentMethod } from "@/types/order";
-import { createContext, useContext, useReducer, type ReactNode } from "react";
 
 type CheckoutContextValue = {
   draft: CheckoutState["draft"];
@@ -68,16 +69,39 @@ export function CheckoutProvider({ children }: CheckoutProviderProps) {
       return;
     }
 
+    const baseOrder = {
+      id: `DF-${Date.now()}`,
+      items: draft.items,
+      subtotal: draft.subtotal,
+      customer: draft.customer,
+      status: "pending" as const,
+      createdAt: new Date().toISOString(),
+    };
+
+    if (paymentMethod === "online") {
+      dispatch({
+        type: "COMPLETE_ORDER",
+        payload: {
+          ...baseOrder,
+          paymentMethod: "online",
+          paymentStatus: "awaiting-payment",
+        },
+      });
+
+      return;
+    }
+
     dispatch({
       type: "COMPLETE_ORDER",
       payload: {
-        id: `DF-${Date.now()}`,
-        items: draft.items,
-        subtotal: draft.subtotal,
-        customer: draft.customer,
-        paymentMethod,
-        status: "pending",
-        createdAt: new Date().toISOString(),
+        ...baseOrder,
+        paymentMethod: "receipt",
+        paymentStatus: "under-review",
+        receipt: {
+          fileUrl: "/images/receipt-sample.jpg",
+          fileName: "receipt-sample.jpg",
+          fileType: "image/jpeg",
+        },
       },
     });
   };
