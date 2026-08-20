@@ -1,9 +1,19 @@
 "use client";
 
 import { useAuth } from "@/components/providers/auth-provider";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { mockAuthService } from "@/services/auth/mock-auth-service";
-import { UserRound } from "lucide-react";
+import { LayoutDashboard, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import CartLink from "./cart-link";
@@ -11,6 +21,8 @@ import CartLink from "./cart-link";
 export default function NavbarActions() {
   const { user, isLoading, clearUser } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const canAccessDashboard = user?.role === "manager" || user?.role === "admin";
 
   const handleLogout = async () => {
     try {
@@ -29,30 +41,76 @@ export default function NavbarActions() {
       {isLoading ? (
         <div
           aria-hidden="true"
-          className="bg-muted h-9 w-24 animate-pulse rounded-lg"
+          className="bg-muted size-9 animate-pulse rounded-full"
         />
       ) : user ? (
-        <div className="flex items-center gap-1">
-          <div className="bg-secondary text-primary flex h-9 items-center gap-2 rounded-lg px-3">
-            <UserRound className="size-4" />
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  aria-label="منوی حساب کاربری"
+                >
+                  <Avatar className="size-9">
+                    <AvatarFallback className="bg-secondary text-primary">
+                      <UserRound className="size-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              }
+            />
 
-            <span className="max-w-20 truncate text-sm font-medium">
-              {user.fullName}
-            </span>
-          </div>
+            <DropdownMenuContent align="end" className="w-64">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">
+                      {user.fullName}
+                    </p>
 
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive h-9 gap-1.5 px-2.5"
-          >
-            <span className="text-xs font-medium">
-              {isLoggingOut ? "در حال خروج..." : "خروج"}
-            </span>
-          </Button>
-        </div>
+                    <p
+                      dir="ltr"
+                      className="text-muted-foreground mt-1 truncate text-left text-xs font-normal"
+                    >
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  variant="destructive"
+                  disabled={isLoggingOut}
+                  onClick={handleLogout}
+                >
+                  <LogOut className="size-4" />
+
+                  {isLoggingOut ? "در حال خروج..." : "خروج از حساب"}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {canAccessDashboard && (
+            <Link
+              href="/admin"
+              className={buttonVariants({
+                variant: "outline",
+                className: "gap-2",
+              })}
+            >
+              <LayoutDashboard className="size-4" />
+              پنل مدیریت
+            </Link>
+          )}
+        </>
       ) : (
         <Link
           href="/login"

@@ -1,5 +1,3 @@
-/** @format */
-
 "use client";
 
 import { useAuth } from "@/components/providers/auth-provider";
@@ -14,7 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { navigationItems } from "@/constants/navigation";
 import { mockAuthService } from "@/services/auth/mock-auth-service";
-import { LogIn, LogOut, Menu, UserRound } from "lucide-react";
+import { LayoutDashboard, LogIn, LogOut, Menu, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import CartLink from "./cart-link";
@@ -24,6 +22,8 @@ import NavLink from "./nav-link";
 export default function MobileNavigation() {
   const { user, clearUser } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const canAccessDashboard = user?.role === "manager" || user?.role === "admin";
 
   const handleLogout = async () => {
     try {
@@ -101,6 +101,24 @@ export default function MobileNavigation() {
           </nav>
 
           <div className="border-border flex flex-col gap-2 border-t pt-5">
+            {canAccessDashboard && (
+              <SheetClose
+                nativeButton={false}
+                render={
+                  <Link
+                    href="/admin"
+                    className={buttonVariants({
+                      variant: "secondary",
+                      className: "w-full gap-2",
+                    })}
+                  >
+                    <LayoutDashboard className="size-4" />
+                    پنل مدیریت
+                  </Link>
+                }
+              />
+            )}
+
             {user ? (
               <Button
                 type="button"
@@ -121,7 +139,7 @@ export default function MobileNavigation() {
                     href="/login"
                     className={buttonVariants({
                       variant: "outline",
-                      className: "w-full",
+                      className: "w-full gap-2",
                     })}
                   >
                     <LogIn className="size-4" />

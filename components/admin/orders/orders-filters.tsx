@@ -23,13 +23,13 @@ export function OrdersFilters() {
 
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
 
-  const status = (searchParams.get("status") ?? "all") as StatusFilter;
+  const status = (searchParams.get("status") ?? "همه وضعیت‌ها") as StatusFilter;
 
   const paymentMethod = (searchParams.get("paymentMethod") ??
-    "all") as PaymentMethodFilterValue;
+    "همه روش‌های پرداخت") as PaymentMethodFilterValue;
 
   const paymentStatus = (searchParams.get("paymentStatus") ??
-    "all") as PaymentStatusFilterValue;
+    "همه وضعیت‌های پرداخت") as PaymentStatusFilterValue;
 
   const updateParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
